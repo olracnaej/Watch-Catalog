@@ -1,0 +1,301 @@
+/* =====================================================
+   COLOR VARIABLES (light mode, the default)
+   ===================================================== */
+:root { /* :root = the whole page; values that get reused are stored here */
+  --bg: #faf8f4; /* variable: page background color (very light beige) */
+  --surface: #fff; /* variable: color of "surfaces" like cards and boxes (white) */
+  --text: #1c1b19; /* variable: main text color (almost black) */
+  --muted: #6b6760; /* variable: secondary text color, more subdued (gray) */
+  --line: #e5e0d6; /* variable: color of borders and divider lines */
+  --accent: #b8893b; /* variable: accent color (gold) for brand names and details */
+  --accent-ink: #fff; /* variable: text color to use on top of the accent (not used yet) */
+  color-scheme: light; /* tells the browser to use light controls (scrollbars, inputs) */
+  box-sizing: border-box; /* padding and border are counted inside the total width */
+  padding-top: env(safe-area-inset-top, 0px); /* extra space at the top on phones with a notch; 0 on PC */
+  padding-bottom: env(safe-area-inset-bottom, 0px); /* extra space at the bottom on phones with a bottom bar */
+}
+
+/* =====================================================
+   AUTOMATIC DARK MODE (if the user's system is set to dark)
+   ===================================================== */
+@media (prefers-color-scheme: dark) { /* only applies if the device uses dark mode */
+  :root:not([data-theme="light"]) { /* ...and only if the page isn't forcing the light theme */
+    --bg: #141311; /* page background: almost black */
+    --surface: #1e1d1a; /* cards and boxes: very dark gray */
+    --text: #f1eee8; /* main text: almost white */
+    --muted: #9a958b; /* secondary text: light gray */
+    --line: #33312c; /* borders and lines: dark gray */
+    --accent: #d4a455; /* slightly lighter gold so it shows on a dark background */
+    --accent-ink: #141311; /* text on top of the accent: dark */
+    color-scheme: dark; /* browser controls in their dark version */
+  }
+}
+
+/* =====================================================
+   FORCED DARK MODE (if the HTML has data-theme="dark")
+   ===================================================== */
+:root[data-theme="dark"] { /* only active if <html> has the attribute data-theme="dark" */
+  --bg: #141311; /* dark background */
+  --surface: #1e1d1a; /* dark surfaces */
+  --text: #f1eee8; /* light text */
+  --muted: #9a958b; /* light secondary text */
+  --line: #33312c; /* dark lines */
+  --accent: #d4a455; /* light gold */
+  --accent-ink: #141311; /* text on top of the accent */
+  color-scheme: dark; /* dark controls */
+}
+
+/* =====================================================
+   GENERAL RULES
+   ===================================================== */
+* { /* the asterisk = every element on the page */
+  box-sizing: border-box; /* width includes padding and border, so sizes don't get thrown off */
+}
+
+html { /* the root element of the page */
+  scroll-padding-top: env(safe-area-inset-top, 0px); /* when jumping to a section, leaves space at the top on phones */
+}
+
+body { /* all the visible content */
+  margin: 0; /* removes the white margin the browser adds by default */
+  background: var(--bg); /* uses the background variable defined above */
+  color: var(--text); /* uses the text color variable */
+  font-family: Georgia, "Times New Roman", serif; /* elegant serif font; if Georgia doesn't exist, uses the next one */
+  line-height: 1.5; /* line height: 1.5 times the font size, easier to read */
+}
+
+.wrap { /* container that centers and limits the width of the content */
+  max-width: 1100px; /* the content never goes beyond 1100 px wide */
+  margin: 0 auto; /* 0 top/bottom, "auto" on the sides = horizontally centered */
+  padding: 0 20px; /* 20 px of breathing room left and right so it doesn't touch the edge */
+}
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+header { /* the top part with the title */
+  border-bottom: 1px solid var(--line); /* thin line below the header */
+  padding: 28px 0 22px; /* inner space: 28 px top, 0 on the sides, 22 px bottom */
+  text-align: center; /* centers the text */
+}
+
+header h1 { /* the main title inside the header */
+  margin: 0; /* removes the title's default margin */
+  font-size: 2rem; /* size: 2 times the base size (rem = the page's base font size) */
+  letter-spacing: .18em; /* spreads the letters apart for an elegant look */
+  text-transform: uppercase; /* shows the text in CAPITAL LETTERS */
+  font-weight: 400; /* normal weight (headings are bold by default) */
+}
+
+header p { /* the tagline below the title */
+  margin: 6px 0 0; /* 6 px top, 0 on the sides and bottom */
+  color: var(--muted); /* subdued gray so it feels secondary */
+  font-style: italic; /* italic text */
+}
+
+/* =====================================================
+   SEARCH AND FILTER BAR
+   ===================================================== */
+.bar { /* container for the search box and the dropdowns */
+  display: flex; /* places the children in a row, side by side */
+  flex-wrap: wrap; /* if they don't fit, they drop to the next line */
+  gap: 10px; /* 10 px of space between each element */
+  padding: 20px 0; /* 20 px of room above and below */
+}
+
+.bar input, .bar select { /* applies to the search box and the dropdown menus in the bar */
+  font: inherit; /* uses the same font as the rest of the page (inputs have their own by default) */
+  padding: 10px 12px; /* inner space: 10 px top/bottom, 12 px on the sides */
+  border: 1px solid var(--line); /* thin border using the line color */
+  background: var(--surface); /* background in the surface color */
+  color: var(--text); /* color of the typed text */
+  border-radius: 8px; /* rounded corners */
+  min-width: 0; /* lets them shrink on small screens without breaking the layout */
+}
+
+.bar input { /* only the search box */
+  flex: 1 1 220px; /* grows and shrinks to fill the space; base width of 220 px */
+}
+
+.count { /* the "8 watches" text */
+  color: var(--muted); /* subdued gray */
+  font-size: .9rem; /* slightly smaller than normal text */
+  padding-bottom: 10px; /* 10 px of space below */
+}
+
+/* =====================================================
+   CARD GRID
+   ===================================================== */
+.grid { /* container for all the watch cards */
+  display: grid; /* turns on grid layout (rows and columns) */
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* creates as many columns as fit, each at least 240 px wide, sharing the leftover space */
+  gap: 18px; /* 18 px of space between cards */
+  padding-bottom: 50px; /* space below the grid */
+}
+
+.card { /* each watch card (it's a <button>) */
+  background: var(--surface); /* background in the surface color */
+  border: 1px solid var(--line); /* thin border */
+  border-radius: 12px; /* rounded corners */
+  overflow: hidden; /* clips anything that sticks out past the rounded corners */
+  cursor: pointer; /* the mouse turns into a hand to show it can be clicked */
+  transition: transform .15s, box-shadow .15s; /* position and shadow changes are animated over 0.15 seconds */
+  text-align: left; /* text aligned left (buttons center it by default) */
+  font: inherit; /* uses the page's font instead of the button's */
+  color: inherit; /* uses the page's text color */
+  padding: 0; /* removes the button's default inner space */
+}
+
+.card:hover, .card:focus-visible { /* when the mouse is over it or it's selected with the keyboard */
+  transform: translateY(-3px); /* lifts the card 3 px */
+  box-shadow: 0 8px 24px rgba(0,0,0,.12); /* soft shadow: 0 horizontal, 8 vertical, 24 blur, black at 12% */
+  outline: none; /* removes the default blue outline (the shadow and movement already show focus) */
+}
+
+.pic { /* box that holds the watch image */
+  background: linear-gradient(160deg, var(--line), var(--bg)); /* diagonal gradient from one color to another */
+  display: flex; /* turns on flexbox so the image can be centered */
+  justify-content: center; /* centers the image horizontally */
+  padding: 22px; /* space around the image */
+}
+
+.pic svg { /* the SVG watch drawing inside the box */
+  width: 150px; /* fixed width of 150 px */
+  height: auto; /* height adjusts by itself so the drawing isn't distorted */
+}
+
+.info { /* text area of the card (brand, name, price) */
+  padding: 14px 16px 18px; /* inner space: 14 top, 16 on the sides, 18 bottom */
+}
+
+.brand { /* brand name */
+  font-size: .75rem; /* small text */
+  letter-spacing: .14em; /* spaced-out letters */
+  text-transform: uppercase; /* in CAPITAL LETTERS */
+  color: var(--accent); /* gold color */
+}
+
+.name { /* model name */
+  font-size: 1.1rem; /* slightly bigger than normal text */
+  margin: 2px 0 6px; /* 2 px top, 0 on the sides, 6 px bottom */
+}
+
+.price { /* the price */
+  font-weight: 700; /* bold */
+}
+
+.empty { /* the "No watches match your search" message */
+  grid-column: 1 / -1; /* spans all columns, from the first to the last */
+  text-align: center; /* centered text */
+  color: var(--muted); /* subdued gray */
+  padding: 40px 0; /* 40 px of room above and below */
+}
+
+/* =====================================================
+   DETAIL WINDOW (MODAL)
+   ===================================================== */
+dialog { /* the pop-up window with the watch details */
+  border: 1px solid var(--line); /* thin border */
+  border-radius: 14px; /* rounded corners */
+  background: var(--surface); /* surface background */
+  color: var(--text); /* text color */
+  padding: 0; /* removes the default inner space */
+  max-width: 760px; /* maximum width of 760 px */
+  width: calc(100% - 32px); /* width = full screen minus 32 px, to leave a margin on phones */
+}
+
+dialog::backdrop { /* the layer that covers the page while the window is open */
+  background: rgba(0,0,0,.55); /* black at 55% opacity, darkens what's behind */
+}
+
+.modal { /* inner content of the window */
+  display: grid; /* turns on grid layout */
+  grid-template-columns: 1fr 1fr; /* two equal-width columns: image on the left, details on the right */
+}
+
+.modal .pic { /* the image box, but only inside the window */
+  padding: 30px; /* more space than on the card */
+}
+
+.modal .pic svg { /* the watch drawing inside the window */
+  width: 210px; /* bigger than on the card (150 px) */
+}
+
+.modal .info { /* text area inside the window */
+  padding: 26px; /* 26 px of space on all sides */
+}
+
+.modal h2 { /* the watch name in the window */
+  margin: 2px 0 8px; /* 2 px top, 0 on the sides, 8 px bottom */
+  font-weight: 400; /* normal weight instead of bold */
+}
+
+.specs { /* list of specifications (type, size, water resistance) */
+  list-style: none; /* removes the bullet points */
+  padding: 0; /* removes the default indent of lists */
+  margin: 14px 0; /* 14 px of space above and below */
+  font-size: .92rem; /* slightly smaller text */
+  color: var(--muted); /* subdued gray */
+}
+
+.specs li { /* each line of the list */
+  padding: 5px 0; /* 5 px of room above and below */
+  border-bottom: 1px solid var(--line); /* divider line under each one */
+}
+
+.specs b { /* the bold label ("Type:", "Case size:") */
+  color: var(--text); /* main text color so it stands out from the gray */
+  font-weight: 600; /* medium-bold weight */
+}
+
+/* =====================================================
+   CLOSE BUTTON AND CONTACT
+   ===================================================== */
+.close { /* the X to close the window */
+  position: absolute; /* positioned freely inside the window */
+  top: 10px; /* 10 px from the top edge */
+  right: 14px; /* 14 px from the right edge */
+  background: none; /* no background */
+  border: 0; /* no border */
+  font-size: 1.6rem; /* the X looks big */
+  color: var(--text); /* main text color */
+  cursor: pointer; /* hand cursor on mouse over */
+}
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+footer { /* the bottom part of the page */
+  border-top: 1px solid var(--line); /* thin line above the footer */
+  text-align: center; /* centered text */
+  color: var(--muted); /* subdued gray */
+  padding: 22px 0 30px; /* 22 px of space on top and 30 px at the bottom */
+  font-size: .85rem; /* small text */
+}
+
+/* =====================================================
+   WHATSAPP PHONE NUMBER
+   ===================================================== */
+.whatsapp { /* text block that introduces the WhatsApp number (header, footer and detail window) */
+  margin-top: 14px; /* 14 px of space above */
+  font-size: 1rem; /* normal-size text */
+  color: var(--muted); /* subdued gray, so the number stands out more */
+}
+
+.phone { /* the phone number itself, big and easy to see */
+  display: block; /* puts the number on its own line */
+  font-size: 2rem; /* very large text (2 times the base size) */
+  font-weight: 700; /* bold */
+  letter-spacing: .06em; /* slightly spaces out the digits so they are easier to read */
+  line-height: 1.2; /* tighter line height, which suits big text */
+  color: var(--text); /* main text color: the strongest contrast available */
+}
+
+/* =====================================================
+   MOBILE ADAPTATION
+   ===================================================== */
+@media (max-width: 620px) { /* only applies on screens 620 px wide or less */
+  .modal { /* the detail window */
+    grid-template-columns: 1fr; /* a single column: image on top and details below */
+  }
+}

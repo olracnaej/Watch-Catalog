@@ -1,0 +1,53 @@
+<!DOCTYPE html> <!-- tells the browser this is a modern HTML5 page -->
+
+<html lang="es"> <!-- root element; lang="es" says the page text is in Spanish -->
+
+<head> <!-- invisible information about the page -->
+<meta charset="utf-8"> <!-- lets the page show accents and symbols like á, ñ and ₡ correctly -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"> <!-- makes the page fit phone screens -->
+<title>Catálogo de Relojes</title> <!-- the text shown on the browser tab -->
+<link rel="stylesheet" href="styles.css"> <!-- loads the design from the styles.css file -->
+</head> <!-- end of the invisible information -->
+
+<body> <!-- everything the visitor can see -->
+
+<header> <!-- the top part of the page -->
+  <div class="wrap"> <!-- centered container that limits the width -->
+    <h1>Catálogo de Relojes</h1> <!-- main title -->
+    <p>Encuentre su próximo reloj</p> <!-- tagline under the title -->
+    <div class="whatsapp">WhatsApp <strong class="phone"></strong></div> <!-- label plus the big phone number (filled in by app.js) -->
+  </div> <!-- end of the centered container -->
+</header> <!-- end of the header -->
+
+<main class="wrap"> <!-- the main content of the page, centered -->
+  <div class="bar"> <!-- row with the search box and filters -->
+    <input id="q" type="search" placeholder="Buscar por nombre o marca…" aria-label="Buscar"> <!-- search box; id="q" lets app.js find it -->
+    <select id="brand" aria-label="Marca"></select> <!-- brand dropdown, filled by app.js -->
+    <select id="type" aria-label="Tipo"></select> <!-- type dropdown, filled by app.js -->
+    <select id="sort" aria-label="Ordenar"> <!-- dropdown to choose the price order -->
+      <option value="">Ordenar: Destacados</option> <!-- default order (the order of the list) -->
+      <option value="asc">Precio: de menor a mayor</option> <!-- cheapest first -->
+      <option value="desc">Precio: de mayor a menor</option> <!-- most expensive first -->
+    </select> <!-- end of the order dropdown -->
+  </div> <!-- end of the search and filter row -->
+  <div class="count" id="count"></div> <!-- shows "8 relojes"; filled by app.js -->
+  <div class="grid" id="grid"></div> <!-- container where app.js draws the watch cards -->
+</main> <!-- end of the main content -->
+
+<footer> <!-- the bottom part of the page -->
+  <div class="wrap"> <!-- centered container -->
+    <div class="whatsapp">¿Tiene dudas? Escríbanos por WhatsApp al <strong class="phone"></strong> y le respondemos lo antes posible.</div> <!-- footer message with the big phone number -->
+  </div> <!-- end of the centered container -->
+</footer> <!-- end of the footer -->
+
+<dialog id="dlg"> <!-- pop-up window with the watch details, opened by app.js -->
+  <button class="close" id="x" aria-label="Cerrar">×</button> <!-- the X button that closes the window -->
+  <div class="modal" id="modal"></div> <!-- content of the window, filled by app.js -->
+</dialog> <!-- end of the pop-up window -->
+
+<script src="data.js"></script> <!-- loads the watch list, phone number and currency -->
+<script src="app.js"></script> <!-- loads the code that draws and controls the page; must come after data.js -->
+
+</body> <!-- end of the visible content -->
+
+</html> <!-- end of the page -->
